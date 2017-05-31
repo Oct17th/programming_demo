@@ -1,8 +1,6 @@
-package alibaba;
+package alibaba.day_20170426;
 
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 2017阿里巴巴（第2次投递）网申（ 04.26）在线笔试编程题 1/2
@@ -46,7 +44,7 @@ filter(200-paid-done, pattern) = 0
  * @author YiJie
  * @date May 4, 2017
  */
-public class Main2_1 {
+public class FilterPattern {
 	public static void main(String[] args) {
 		// read test
 //        String test = "100-trade-done";
@@ -55,7 +53,7 @@ public class Main2_1 {
 		// read pattern
 //        String pattern = "1*trade?done";
 		String pattern = in.nextLine();
-		Main2_1 m = new Main2_1();
+		FilterPattern m = new FilterPattern();
 		if (m.filter(test, pattern)) {
 			System.out.println(1);
 		} else {

@@ -1,4 +1,4 @@
-package alibaba;
+package alibaba.day_20170426;
 
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -35,12 +35,12 @@ import java.util.Scanner;
  * @author YiJie
  * @date May 4, 2017
  */
-public class Main2_2 {
+public class ReversePolish {
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		String[] input = in.nextLine().split("[ ]+");
 		
-		Main2_2 main = new Main2_2();
+		ReversePolish main = new ReversePolish();
 		int result = main.work(input);
 		System.out.println(result);
 	}
