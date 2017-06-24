@@ -1,16 +1,11 @@
-package hangseng.day_20170513;
+package java12team;
 
 /**
- * 17.05.13恒生电子（南昌大学）现场笔试编程题
- * <p>
- * 36进制与十进制转换
- *
- * @author YiJie
- * @date May 13, 2017
- */
-
+ * 进制转换<br/>
+ * 输入一个十进制数，转换为36进制数输出
+ **/
 public class Conversion {
-    /**
+	/**
      * 36进制
      */
     private static final int RADIX = 36;
@@ -41,10 +36,5 @@ public class Conversion {
             divisor *= length;
         }
         return new String(sb.reverse());
-    }
-
-    public static void main(String[] args) {
-        Conversion conversion = new Conversion();
-        System.out.println(conversion.conversion(12345));
-    }
+	}
 }
