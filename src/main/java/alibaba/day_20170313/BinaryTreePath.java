@@ -1,4 +1,7 @@
 package alibaba.day_20170313;
+
+import java.io.File;
+
 /**
  * 17.3.13
  * 内推在线编程测试
@@ -15,4 +18,27 @@ public class BinaryTreePath {
 
 
 
+}
+
+class Node{
+    int L;
+    int P;
+    int V;
+    int num;
+    Node(int num){
+        this.num=num;
+        this.L=num/100;
+        this.P=num%100/10;
+        this.V=num%10;
+    }
+    @Override
+    public String toString() {
+        return "Node [L=" + L + ", P=" + P + ", V=" + V + ", num=" + num + "]";
+    }
+}
+class Tree{
+    int[] l = {0,1,2,3,4};
+    int[] p = {0,1,2,3,4,5,6,7,8,9};
+    Node n;
+//	Integer.toBinaryString();
 }

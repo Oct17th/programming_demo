@@ -21,7 +21,7 @@ package java12team;
 public class Fibonacci {
     public static void main(String[] args) {
         Fibonacci m = new Fibonacci();
-		m.printFibonacci(0);
+        m.printFibonacci(0);
     }
 
     public void printFibonacci(int k) {
@@ -32,7 +32,7 @@ public class Fibonacci {
             return;
         }
         //填充斐波那契列数组
-        int[] n=getFibonacci(k);
+        int[] n = getFibonacci(k);
         //对角线打印数组
         for (int i = 0; i < k; i++) {
             for (int j = 0; j < k; j++) {
@@ -58,7 +58,13 @@ public class Fibonacci {
                 n[i] = n[i - 1] + n[i - 2];
             }
         }
+        String a = null;
+        switch (a) {
+            case "ABC":
+            case "BCD":
+        }
         return n;
+
     }
 
 }
