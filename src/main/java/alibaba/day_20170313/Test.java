@@ -52,12 +52,11 @@ public class Test {
         while (true) {
             System.out.println("请输入想查询的根结点下标：");
             int i = in.nextInt();
-            if (i == 0) break;
+            if (i == -1) break;
 //        System.out.println("\n"+binaryTreePath.getLeaves(2, 0));
             System.out.println("--------- 打印二叉树，该根节点的叶子结点用[]标识 ---------");
             binaryTreePath.printLeaves(i / 10, i % 10);
         }
-        binaryTreePath.printTree();
 
 
 
