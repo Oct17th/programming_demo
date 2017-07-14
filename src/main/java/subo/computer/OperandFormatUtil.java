@@ -18,7 +18,7 @@ public class OperandFormatUtil {
 
 
     /**
-     * 格式化操作数按与其匹配的字体大小在operandLabel上的显示显示
+     * 格式化操作数按与其匹配的字体大小在operandLabel上的显示
      *
      * @param operandLabel    装入操作数文本的的Label
      * @param separateOperand 带正确分隔符的操作数
