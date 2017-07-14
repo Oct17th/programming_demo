@@ -15,8 +15,10 @@ abstract class OperatorHandler {
     private static final char MULTIPLY = '×';
     private static final char DIVIDE = '÷';
     /**
-     * 寄存计算结果
+     * 寄存计算结果。一个结果数最多两个运算符（双目+单目）
      */
+    //TODO 暂时不考虑单目运算符，registerResult就寄存一个double计算结果和一个操作符
+//    static Stack<String> registerResult = new Stack<>();
     Double registerResult = null;
     /**
      * 当前操作符
@@ -61,62 +63,57 @@ abstract class OperatorHandler {
 
     /**
      * = 操作处理
-     * 取processText末尾操作符，取寄存的processResult和resultText进行操作
-     * TODO 若precess为空?      运算要自定义一个操作数栈
-     * 结果append到processLabel并显示到resultLabel
+     * <p>
+     * 1.按下 = ，若操作符为空 ，return
+     * //TODO 若操作符为单目运算符，操作当前数...暂时不考虑单目运算符
+     * 取寄存结果{@link OperatorHandler#registerResult}、当前操作符{@link OperatorHandler#currentOperator}
+     * 2.若寄存器不为空，计算 操作数 = 寄存器 [操作符] 操作数
+     * 3.寄存器置空，操作符置空，操作面板显示操作数，isLockResult==true，操作数append到过程面板
      */
     void equal(final JLabel resultLabel, final JLabel processLabel) {
-//        if (isAlreadyEquals) {
-//            return;
-//        }
+        String processText = processLabel.getText();
+        String separateOperand = resultLabel.getText();
+        String unseparateOperand = OperandFormatUtil.separateOperand2unseparateOperand(separateOperand);
 
-        //处理数据String转Double
-        String resultText = resultLabel.getText();
-        if (resultText.endsWith(".")) {//TODO 处理不合法的输入数据
-            resultText = resultText.substring(0, resultText.length() - 1);
+        //针对反复按=的处理，&&右边是针对processText=一个操作数+一个操作符的情况下按下=的情况
+        if (isLockResult && !processText.endsWith(String.valueOf(currentOperator))) {
+            processText += currentOperator;
         }
+        processLabel.setText(processText + unseparateOperand);
 
-        //processLabel显示数据
-//        String prefix = processLabel.getText().equals("0") ? "" : processLabel.getText();//processLabel的数据内容为0
-        String prefix = processLabel.getText();
-        Double result = TextFormatUtil.string2Double(resultText);
-
-        if (isLockResult && !prefix.endsWith(String.valueOf(currentOperator))) {//针对重复按=的情况，补操作符
-            processLabel.setText(prefix + currentOperator + (result.equals(0.0) ? "0" : TextFormatUtil.formatProcessText(result)));
-        } else {
-            processLabel.setText(prefix + (result.equals(0.0) ? "0" : TextFormatUtil.formatProcessText(result)));
-        }
-
+        Double operand = OperandFormatUtil.separateOperand2operand(separateOperand);
         switch (currentOperator.charValue()) {
             case OperatorHandler.ADD:
-                result = add(registerResult, result);//调用add方法处理数据
+                operand = add(registerResult, operand);//调用add方法处理数据
                 break;
             case OperatorHandler.SUBTRACT:
-                result = subtract(registerResult, result);//调用subtract方法处理数据
+                operand = subtract(registerResult, operand);//调用subtract方法处理数据
                 break;
             case OperatorHandler.MULTIPLY:
-                result = multiply(registerResult, result);//调用multiply方法处理数据
+                operand = multiply(registerResult, operand);//调用multiply方法处理数据
                 break;
             case OperatorHandler.DIVIDE:
-                result = divide(registerResult, result);//调用divide方法处理数据
+                operand = divide(registerResult, operand);//调用divide方法处理数据
                 break;
         }
 
         //resultLabel显示数据
-        if (result.equals(0.0)) {
-            resultLabel.setText("0");
-        } else {
-            TextFormatUtil.setResultText(resultLabel, TextFormatUtil.formatResultText(result));
-        }
+        unseparateOperand = OperandFormatUtil.operand2unseparateOperand(operand);
+        OperandFormatUtil.setResultText(resultLabel, OperandFormatUtil.resetSeparate(unseparateOperand));
 
         isLockResult = true;//标记已执行equals方法
-        registerResult = result;//存储计算结果
+        registerResult = operand;//存储计算结果
     }
 
     /**
-     * 栈里没数
+     * 1.按下操作符，
+     * 2.IF isLockResult==true 过程文本、{@link OperatorHandler#currentOperator}替换操作符
+     * 3.将操作数+操作符写入过程文本
+     * 4.IF 原始过程文本为空，寄存器存入操作数
+     * 5.ELSE 调用equals
+     * 6.最后将操作符存入{@link OperatorHandler#currentOperator}
      * <p>
-     * 没有运算符（进来该方法的都有运算符）
+     * {@link OperatorHandler#currentOperator}为processText最后一位操作符
      *
      * @param resultLabel
      * @param processLabel
@@ -129,27 +126,35 @@ abstract class OperatorHandler {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                String prefix = processLabel.getText();
-                if (isLockResult) {
-                    if (prefix.endsWith(String.valueOf(OperatorHandler.ADD)) ||
-                            prefix.endsWith(String.valueOf(OperatorHandler.SUBTRACT)) ||
-                            prefix.endsWith(String.valueOf(OperatorHandler.MULTIPLY)) ||
-                            prefix.endsWith(String.valueOf(OperatorHandler.DIVIDE))) {
-                        processLabel.setText(prefix.substring(0, prefix.length() - 1) + operator);
+                if(resultLabel.getText().length()>15||processLabel.getText().length()>270)return;//长度超过限制直接退出不处理
+                String processText = processLabel.getText();
+                String separateOperand = resultLabel.getText();
+                String unseparateOperand = OperandFormatUtil.separateOperand2unseparateOperand(separateOperand);
+                Double operand = OperandFormatUtil.separateOperand2operand(separateOperand);
+
+                if (processText.equals("")) {
+                    if (registerResult == null) {//初始化状态，process面板里的数据为""，即currentOperator==null
+                        processLabel.setText(unseparateOperand + operator);
+                        currentOperator = operator;
+                        registerResult = operand;
+                        isLockResult = true;
+                        return;
+                    }
+                }
+
+                if (isLockResult) {//锁定情况下只允许修改操作符
+                    if (processText.endsWith(String.valueOf(OperatorHandler.ADD)) ||
+                            processText.endsWith(String.valueOf(OperatorHandler.SUBTRACT)) ||
+                            processText.endsWith(String.valueOf(OperatorHandler.MULTIPLY)) ||
+                            processText.endsWith(String.valueOf(OperatorHandler.DIVIDE))) {
+                        processLabel.setText(processText.substring(0, processText.length() - 1) + operator);
                     } else {
-                        processLabel.setText(prefix + operator);
+                        processLabel.setText(processText + operator);
                     }
                     currentOperator = operator;
-                    return;////反复按操作符不进行运算
+                    return;//反复按操作符不进行运算
                 }
-//                if(prefix.equals("")){
-                if (registerResult == null) {//初始化状态，process面板里的数据为""，即currentOperator==null
-                    processLabel.setText(TextFormatUtil.formatProcessText(resultLabel.getText()) + operator);
-                    currentOperator = operator;
-                    registerResult = TextFormatUtil.string2Double(resultLabel.getText());
-                    isLockResult = true;
-                    return;
-                }
+//
                 //到此位置 断言 currentOperator!=null && operator!=null
                 equal(resultLabel, processLabel);//方法内已设置了registerResult和isLockResult
                 currentOperator = operator;
@@ -170,11 +175,14 @@ abstract class OperatorHandler {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(resultLabel.getText().length()>15||processLabel.getText().length()>270)return;//长度超过限制直接退出不处理
                 if (currentOperator == null) return;//栈内没有数据与运算符
                 equal(resultLabel, processLabel);
-//                currentOperator = null;
+                processLabel.setText("");
+                currentOperator = null;
+                registerResult = null;
             }
         };
     }
-}
 
+}

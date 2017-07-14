@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
 
 /**
  * 计算器界面UI
- * 实例化即可打开界面
- * 需要传入一个OperatorHandler实现对数据的处理
+ * 通过调用构造方法实例化，即可打开界面
+ * 需要传入一个OperatorHandler实现类对操作符进行处理
  *
  * @author YiJie  2017/7/12
  **/
@@ -41,7 +41,7 @@ public class ComputerFrame extends JFrame {
         JPanel displayPanel = new JPanel(new GridLayout(3, 1));
         {//设置processLabel
             processLabel = new JLabel("", SwingConstants.RIGHT);
-            processLabel.setFont(new Font(SHOW_FONT, Font.PLAIN, 18));
+            processLabel.setFont(new Font("Malgun Gothic", Font.PLAIN, 18));
             processLabel.setBorder(new EmptyBorder(0, 17, 0, 17));
 
             //利用JScrollPane添加水平滚动条需要时自动出现
@@ -95,7 +95,7 @@ public class ComputerFrame extends JFrame {
                             resultLabel.setText("0");
                             resultLabel.setFont(new Font(SHOW_FONT, Font.BOLD, 58));
                             operatorHandler.registerResult = null;//存储的计算过程结果置空
-                            operatorHandler.currentOperator = null;//当前操作符置空//TODO process面板为空可直接添加操作符
+                            operatorHandler.currentOperator = null;//当前操作符置空
                             operatorHandler.isLockResult = false;//标记未进行equals操作
                         }
                     });
@@ -120,7 +120,7 @@ public class ComputerFrame extends JFrame {
                             }
 
                             originalText = isNegative ? "-" + originalText : originalText;//补充负号
-                            TextFormatUtil.setResultText(resultLabel, TextFormatUtil.formatResultText(originalText));
+                            OperandFormatUtil.setResultText(resultLabel, OperandFormatUtil.resetSeparate(originalText));
                         }
                     });
                     break;
@@ -129,7 +129,7 @@ public class ComputerFrame extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             String originalText = resultLabel.getText();
-                            TextFormatUtil.setResultText(resultLabel, originalText.equals("0") ? "0" : originalText.startsWith("-") ? originalText.substring(1) : "-" + originalText);
+                            OperandFormatUtil.setResultText(resultLabel, originalText.equals("0") ? "0" : originalText.startsWith("-") ? originalText.substring(1) : "-" + originalText);
                         }
                     });
                     break;
@@ -141,13 +141,13 @@ public class ComputerFrame extends JFrame {
                             if (operatorHandler.isLockResult) {
                                 resultLabel.setText("0.");
                             } else {
-                                TextFormatUtil.setResultText(resultLabel, resultLabel.getText() + ".");
+                                OperandFormatUtil.setResultText(resultLabel, resultLabel.getText() + ".");
                             }
                             operatorHandler.isLockResult = false;
                         }
                     });
                     break;
-                case "+":
+                case "+"://TODO process超过长度限制不处理
                 case "-":
                 case "×":
                 case "÷":
@@ -166,7 +166,7 @@ public class ComputerFrame extends JFrame {
                             } else {
                                 String originalText = resultLabel.getText();
                                 originalText = originalText + finalCurrentKey;
-                                TextFormatUtil.setResultText(resultLabel, TextFormatUtil.formatResultText(originalText));
+                                OperandFormatUtil.setResultText(resultLabel, OperandFormatUtil.resetSeparate(originalText));
                             }
                             operatorHandler.isLockResult = false;
 
