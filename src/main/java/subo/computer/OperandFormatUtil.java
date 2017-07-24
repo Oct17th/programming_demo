@@ -29,7 +29,7 @@ public class OperandFormatUtil {
         int numcount = removeSeparator(separateOperand).length();
 
         //长度超出范围直接返回
-        if (numcount > 15) {
+        if (numcount > 10) {//TODO 暂时隔绝数值过大Double转型失败问题
             return;
         }
 
@@ -154,7 +154,7 @@ public class OperandFormatUtil {
      * @return 可计算的Double型的操作数
      */
     public static Double separateOperand2operand(String separateOperand) {
-        Double operand = Double.valueOf(removeSeparator(separateOperand));
+        Double operand = Double.valueOf(removeSeparator(separateOperand));//TODO 这里double做转型，超过7位数会转成Infinity
         return operand;
     }
 
