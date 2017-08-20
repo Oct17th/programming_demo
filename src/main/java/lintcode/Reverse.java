@@ -8,7 +8,7 @@ public class Reverse {
      * @param head: n
      * @return: The new head of reversed linked list.
      */
-    public ListNode reverse(ListNode head) {
-
-    }
+//    public ListNode reverse(ListNode head) {
+//
+//    }
 }

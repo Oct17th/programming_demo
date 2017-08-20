@@ -1,5 +1,7 @@
 package lintcode;
 
+import java.util.Scanner;
+
 /**
  * 二进制中有多少个1，即先进制转换，然后计算有几个1
  *
