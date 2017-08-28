@@ -1,4 +1,4 @@
-package lintcode;
+package lintcode.aimoffer.chapter2;
 
 import java.util.Scanner;
 

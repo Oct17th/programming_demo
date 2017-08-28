@@ -8,12 +8,17 @@ package alibaba.day_20170821;
  * 就不能再摘比这棵树结的桃子少的树上的桃子了，那么小猴子最多能摘几个桃子呢？
  * 举例说明，比如有5课树，分别结了10,4,5,12,8颗桃子，那么小猴子最多能摘3颗桃子，来自于结了4,5,8颗桃子的树。
  *
+ * 输入示例：
+ * 10 4 5 12 8
+ * 输出示例：
+ * 3
+ *
  * @author YiJie 2017/8/21.
  */
 
 import java.util.Scanner;
 
-public class Main {
+public class PickPeach {
     static int max(int[] counts, int start) {
         int maxindex = start;
         int max = counts[start];
@@ -55,4 +60,6 @@ public class Main {
         }
         System.out.println(count);
     }
+
 }
+

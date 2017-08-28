@@ -1,4 +1,4 @@
-package lintcode;
+package lintcode.aimoffer.chapter1;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package lintcode;
+package lintcode.aimoffer.chapter2;
 
 /**
  * 将字符串空格装转换为"%20"

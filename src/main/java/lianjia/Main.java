@@ -8,7 +8,7 @@ package lianjia;
 //import java.util.Scanner;
 //import java.util.TreeSet;
 //
-//public class Main {
+//public class FindKthMax {
 //    public static void main(String[] args) {
 //        try {
 //            Scanner in = new Scanner(new FileInputStream("random.in"));
